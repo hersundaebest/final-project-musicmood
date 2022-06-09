@@ -1,8 +1,31 @@
 const express = require('express');
-const app = express();
+const spotifyWebAPI = require('spotify-web-api-node');
+const cors = require('cors');
+const bodyParser = require('body-parser');
 
-app.get("/", (req, res) => {
+const PORT = 8000;
+
+const {
+    getRecentlyPlayedSongs,
+    getAudioFeatures,
+    handleLogin
+  } = require("./handlers");
+
+// test
+express()
+.use(cors())
+.use(bodyParser.json())
+.use(express.urlencoded({extended: false}))
+
+.get("/", (req, res) => {
     res.send('Hello World');
 })
 
-app.listen(8000);
+
+  // Spotify Endpoints
+  .post('/login', handleLogin)
+  .get('/me/player/recently-played', getRecentlyPlayedSongs)
+  .get('/audio-features', getAudioFeatures)
+
+
+.listen(PORT, () => console.info(`Listening on port ${PORT}`));

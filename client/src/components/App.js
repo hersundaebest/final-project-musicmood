@@ -1,23 +1,24 @@
-import Home from "./Home"
 import styled from "styled-components";
+import GlobalStyles from "./GlobalStyles";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-
+import Home from "./Home";
+import Mood from "./Mood";
 
 const App = () => {
   return (
     <AppWrapper>
-    <GlobalStyles />
-    <BrowserRouter>
-      <Header />
-      <ComponentWrapper>
-        <Routes>
-          <Route exact path="/" element={<Home />} />
-        </Routes>
-      </ComponentWrapper>
-    </BrowserRouter>
-  </AppWrapper>
+      <GlobalStyles />
+      <BrowserRouter>
+        <ComponentWrapper>
+          <Routes>
+            <Route exact path="/" element={<Home />} />
+            <Route exact path="/mood" element={<Mood />} />
+          </Routes>
+        </ComponentWrapper>
+      </BrowserRouter>    
+    </AppWrapper>
   );
-}
+};
 
 const AppWrapper = styled.div`
   width: 100%;
