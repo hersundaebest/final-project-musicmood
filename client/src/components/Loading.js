@@ -1,7 +1,9 @@
+import LinearProgress from '@mui/material/LinearProgress'
+
 const Loading = () => {
     return (
 <>
-Loading...
+<LinearProgress color="inherit"/>
 </>
     )
 }

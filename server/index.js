@@ -7,7 +7,9 @@ const PORT = 8000;
 
 const {
     getRecentlyPlayedSongs,
-    getAudioFeatures,
+    addUser,
+    getMood,
+    addMood,
     handleLogin
   } = require("./handlers");
 
@@ -21,11 +23,12 @@ express()
     res.send('Hello World');
 })
 
-
   // Spotify Endpoints
   .post('/login', handleLogin)
   .get('/me/player/recently-played', getRecentlyPlayedSongs)
-  .get('/audio-features', getAudioFeatures)
-
+  .post('/api/add-user', addUser)
+  .get('/api/get-mood', getMood)
+  .post('/api/get-mood', getMood)
+  .patch('/api/add-mood', addMood)
 
 .listen(PORT, () => console.info(`Listening on port ${PORT}`));

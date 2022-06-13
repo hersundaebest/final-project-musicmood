@@ -15,6 +15,7 @@ const Home = () => {
         </>
     )
 }
+
 const Wrapper = styled.div`
 margin: auto;
 text-align: center;

@@ -6,12 +6,24 @@ import MoodHeader from "./MoodHeader";
 import useAuth from "../hooks/useAuth";
 import SpotifyWebApi from "spotify-web-api-node";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+
 
 const Mood = () => {
-  const [userData, setUserData] = useState();
+  let navigate = useNavigate();
+  const [userData, setUserData] = useState(null);
   const [recentlyPlayed, setRecentlyPlayed] = useState();
+  const [userMood, setUserMood] = useState();
   const [clicked, setClicked] = useState(false);
+  const [status, setStatus] = useState("idle");
+  const [albumArtURL, setAlbumArtURL] = useState();
+  const [trackURL, setTrackURL] = useState();
+  const [feedMoods, setFeedMoods] = useState();
 
+  
+  const userEmail = userData?.body.email;
+
+// obtaining access token from spotify api
   const spotifyAPI = new SpotifyWebApi({
     clientId: process.env.REACT_APP_CLIENT_ID,
   });
@@ -19,99 +31,164 @@ const Mood = () => {
   const accessToken = useAuth(code);
   const sessionToken = sessionStorage.getItem("accessToken");
 
+  // obtaining the user data from Spotify via the session and access tokens
   useEffect(() => {
     if (!accessToken && !sessionToken) {
       return;
     }
     if (sessionToken) {
+      setStatus("loading");
       spotifyAPI.setAccessToken(JSON.parse(sessionToken));
       spotifyAPI.getMe().then((data) => {
-        console.log("*****", data);
         setUserData(data);
-      });
+        setStatus("loaded");
+        return data.body;
+      })
+      .then(data => {
+        fetch(`/api/get-mood?email=${data.email}`)
+        .then((res) => res.json())
+        .then(data => {setFeedMoods(data.data.moods)})
+      })
     }
   }, [accessToken]);
 
-  const onClickHandler = () => {
-    fetch(`/me/player/recently-played?token=${accessToken}`)
+// 
+  
+
+  // posting the user to MongoDB
+  useEffect(() => {
+    if (userData) {
+      fetch("/api/add-user", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email: userEmail }),
+      })
+        .then((res) => res.json())
+        .catch((err) => {
+          console.log(err.message);
+        });
+    }
+  }, [userData]);
+
+  const onClickHandler = async () => {
+    await fetch(`/me/player/recently-played?token=${accessToken}`)
       .then((res) => res.json())
       .then((data) => {
         setRecentlyPlayed(data.audioFeatures);
         setClicked(true);
-        console.log(data.audioFeatures);
+        setUserMood(data.mood);
+        setAlbumArtURL(data.album);
+        setTrackURL(data.songLink)
       })
-      .catch((err) => console.log(err.message));
+    .catch((err) => console.log(err.message));
   };
 
+  const addMoodHandler = async () => {
+    await fetch('/api/add-mood', {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ mood: userMood, email: userEmail }),
+    })
+      .then((res) => res.json())
+      .then(console.log("Mood recorded"))
+      .catch((err) => {
+        console.log(err.message);
+      });
+  };
+
+
   // variables to display data
-const userName = userData?.body.display_name;
-const profileImg = userData?.body.images[0].url;
-const profileURL = userData?.body.external_urls.spotify;
+  const userName = userData?.body.display_name;
+  const profileImg = userData?.body.images[0].url;
+  const profileURL = userData?.body.external_urls.spotify;
 
+  if (status === "loading") {
+    return (
+      <LoadingDiv>
+        <Loading />
+      </LoadingDiv>
+    );
+  }
 
-// arrays and averages calculations 
-const danceabilityArr = recentlyPlayed?.audio_features.map((song) => song.danceability);
-const energyArr = recentlyPlayed?.audio_features.map((song) => song.energy);
-const valenceArr = recentlyPlayed?.audio_features.map((song) => song.valence);
-
-console.log("danceability", danceabilityArr);
-console.log("energy", energyArr);
-console.log("valence", valenceArr);
-
-return (
-  <>
-{clicked === false ? (
-  <>
-      <MoodHeader />
-      <MainWrapper>
-      <WelcomeMessage>Howdy, <b>{userName}</b>!</WelcomeMessage>
-      <A href={profileURL} target="_blank"><ProfileImg src={profileImg} /></A>
-      <MoodButton onClick={onClickHandler}>FIND YOUR MOOD</MoodButton>
-      </MainWrapper>
-      </>
-      ) : 
-      <>
-      <MoodHeader />
-      <Wrapper>
-      <MoodAnalysis userData={userData} />
-      <MoodFeed userData={userData} />
-    </Wrapper>
-    </>}
+  return (
+    <>
+      {clicked === false ? (
+        <>
+          <MoodHeader userData={userData}/>
+          <MainWrapper>
+            <WelcomeMessage>
+              Howdy, <b>{userName}</b>!
+            </WelcomeMessage>
+            <A href={profileURL} target="_blank">
+              <ProfileImg src={profileImg} />
+            </A>
+            <MoodButton onClick={onClickHandler}>FIND YOUR MOOD</MoodButton>
+          </MainWrapper>
+        </>
+      ) : (
+        <>
+          <MoodHeader userData={userData}/>
+          <Wrapper>
+  <Div1>
+              <MoodAnalysis
+                userData={userData}
+                recentlyPlayed={recentlyPlayed}
+                albumArtURL={albumArtURL}
+                trackURL={trackURL}
+                accessToken={accessToken}
+                userMood={userMood}
+              />
+              
+            </Div1>
+            <Div1>
+            <ButtonDiv>
+            <RecordButton type="submit" onClick={addMoodHandler}>RECORD YOUR MOOD</RecordButton>
+            </ButtonDiv>
+            <MoodFeed userData={userData} feedMoods={feedMoods}/>
+            </Div1>
+          </Wrapper>
+        </>
+      )}
     </>
-)
-  // return (
-  //   <>
-  //     <MoodHeader />
-  //     <MainWrapper>
-  //     <WelcomeMessage>Howdy, <b>{userName}</b>!</WelcomeMessage>
-  //     <A href={profileURL} target="_blank"><ProfileImg src={profileImg} /></A>
-  //     <MoodButton onClick={onClickHandler}>FIND YOUR MOOD</MoodButton>
-  //     </MainWrapper>
-  //     {clicked === true ? (
-  //     ) : ""}
-  //   </>
-  // );
+  );
 };
 
+const Div1 = styled.div`
+margin-left: auto;
+margin-right: auto;
+padding-left: 20px;
+padding-right: 20px;
+`
+
+const LoadingDiv = styled.div`
+  margin: auto;
+  padding-top: 40px;
+`;
+
 const WelcomeMessage = styled.div`
-margin: auto;
-margin-top: 50px;
-font-size: 20px;
+  margin: auto;
+  margin-top: 50px;
+  font-size: 20px;
 `;
 
 const ProfileImg = styled.img`
-  width: 250px;
+  width: 300px;
   border-radius: 50%;
   margin-top: 20px;
   margin-bottom: 20px;
 `;
 
 const A = styled.a`
-margin: auto;`
+  margin: auto;
+`;
 
 const Wrapper = styled.div`
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   margin: auto;
 `;
 
@@ -136,4 +213,25 @@ const MoodButton = styled.button`
   cursor: pointer;
 `;
 
+const RecordButton = styled.button`
+  margin-bottom: 20px;
+  padding: 20px 30px;
+  max-width: 400px;
+  font-family: "Poppins";
+  font-size: 20px;
+  font-weight: 600;
+  background-color: rgba(240, 235, 244, 0.7);
+  color: black;
+  mix-blend-mode: screen;
+  border-radius: 20px;
+  cursor: pointer;
+`;
+
+const ButtonDiv = styled.div`
+margin-top: 55px;
+margin-bottom: 20px;
+display: flex;
+align-items: center;
+justify-content: center;
+`;
 export default Mood;

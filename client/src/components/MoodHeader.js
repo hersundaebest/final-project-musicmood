@@ -1,12 +1,12 @@
 import styled from "styled-components";
 import { NavLink } from "react-router-dom";
 
-const MoodHeader = () => {
+const MoodHeader = ({userData}) => {
   return (
     <>
       <Wrapper>
         <HomeButton>
-          <HomeLink to="/">HOME</HomeLink>
+          <HomeLink to="/">RESTART</HomeLink>
         </HomeButton>
         <Header>MUSICMOOD</Header>
       </Wrapper>

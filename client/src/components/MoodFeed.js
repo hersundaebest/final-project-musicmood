@@ -1,47 +1,73 @@
 import styled from "styled-components";
+import moment from "moment";
 
-const MoodFeed = ({userData}) => {
-    return (
-        <>
-        <Header>MY MUSICMOODS</Header>
-        <Wrapper>   
-            <Feed>
-        <p>On [DATE] at [TIME], you were feeling [MOOD].</p>
-        <Divider/>
-        <p>On [DATE] at [TIME], you were feeling [MOOD].</p>
-        </Feed>
+const MoodFeed = ({ feedMoods }) => {
+  return (
+    <>
+      <Header>YOUR MUSICMOODS</Header>
+      <SizeDiv>
+        <Wrapper>
+          <Feed>
+            {feedMoods?.map((el) => (
+              <>
+                <p>
+                  On {moment(el.timestamp).format("MMMM D, YYYY [at] h:mm A")},
+                  you were feeling <Bold>{el.mood}.</Bold>
+                </p>
+                <Divider />
+              </>
+            ))}
+          </Feed>
         </Wrapper>
-        </>
-    )
-}
+      </SizeDiv>
+    </>
+  );
+};
+
+const Bold = styled.span`
+  font-weight: bold;
+`;
 
 const Header = styled.div`
-font-family: 'Poppins';
-font-size: 60px;
-font-weight: 800;
-color: var(--primary-color);
-letter-spacing: 10px;
--webkit-text-fill-color: transparent;
-  -webkit-text-stroke-width: 3px;
+  font-family: "Poppins";
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 50px;
+  font-size: 55px;
+  font-weight: 800;
+  text-align: center;
+  color: var(--primary-color);
+  letter-spacing: 10px;
+  -webkit-text-fill-color: transparent;
+  -webkit-text-stroke-width: 2.5px;
   -webkit-text-stroke-color: var(--primary-color);
 `;
 
+const SizeDiv = styled.div`
+  width: 620px;
+  margin: auto;
+  padding-bottom: 20px;
+  padding-top: 10px;
+`;
 const Wrapper = styled.div`
-background-color: rgba(240, 235, 244, 0.7);
-margin-top: 5px;
-padding: 20px 20px;
-border-radius: 20px;
-text-align: center;
+  background-color: rgba(240, 235, 244, 0.7);
+  margin-top: 5px;
+  padding: 30px 20px;
+  border-radius: 20px;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
 const Feed = styled.div`
-color: var(--secondary-color);
+  color: var(--secondary-color);
+  margin: auto;
 `;
 
 const Divider = styled.hr`
   color: var(--secondary-color);
   background-color: var(--secondary-color);
-  /* mix-blend-mode: screen; */
   height: 1px;
   width: 300px;
   border: 1px transparent;
