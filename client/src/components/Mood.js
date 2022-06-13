@@ -229,7 +229,7 @@ const RecordButton = styled.button`
 
 const ButtonDiv = styled.div`
 margin-top: 55px;
-margin-bottom: 20px;
+/* margin-bottom: 10px; */
 display: flex;
 align-items: center;
 justify-content: center;

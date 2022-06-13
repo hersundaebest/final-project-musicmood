@@ -7,7 +7,7 @@ const MoodFeed = ({ feedMoods }) => {
   console.log(slicedMoodsArr);
   return (
     <>
-      <Header>YOUR MUSICMOODS</Header>
+      <Header>MUSICMOODS</Header>
       <SizeDiv>
         <Wrapper>
           <Feed>
@@ -35,7 +35,6 @@ const Header = styled.div`
   font-family: "Poppins";
   margin-left: auto;
   margin-right: auto;
-  margin-top: 50px;
   font-size: 55px;
   font-weight: 800;
   text-align: center;

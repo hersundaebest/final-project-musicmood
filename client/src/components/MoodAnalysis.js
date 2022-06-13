@@ -107,14 +107,13 @@ const AlbumArtImg = styled.img`
 `;
 
 const Wrapper1 = styled.div`
-  padding-top: 50px;
+  padding-top: 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
 `;
 
 const Wrapper2 = styled.div`
-  padding-bottom: 20px;
   padding-top: 35px;
   display: flex;
   flex-direction: column;
