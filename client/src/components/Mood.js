@@ -6,11 +6,8 @@ import MoodHeader from "./MoodHeader";
 import useAuth from "../hooks/useAuth";
 import SpotifyWebApi from "spotify-web-api-node";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-
 
 const Mood = () => {
-  let navigate = useNavigate();
   const [userData, setUserData] = useState(null);
   const [recentlyPlayed, setRecentlyPlayed] = useState();
   const [userMood, setUserMood] = useState();
@@ -52,9 +49,6 @@ const Mood = () => {
     }
   }, [accessToken]);
 
-// 
-  
-
   // posting the user to MongoDB
   useEffect(() => {
     if (userData) {
@@ -82,7 +76,17 @@ const Mood = () => {
         setAlbumArtURL(data.album);
         setTrackURL(data.songLink)
       })
+      {userMood && 
+      fetch('/api/add-mood', {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ mood: userMood, email: userEmail }),
+      })
+        .then(console.log("Mood recorded"))
     .catch((err) => console.log(err.message));
+  }
   };
 
   const addMoodHandler = async () => {
@@ -93,7 +97,6 @@ const Mood = () => {
       },
       body: JSON.stringify({ mood: userMood, email: userEmail }),
     })
-      .then((res) => res.json())
       .then(console.log("Mood recorded"))
       .catch((err) => {
         console.log(err.message);
@@ -170,8 +173,8 @@ const LoadingDiv = styled.div`
 `;
 
 const WelcomeMessage = styled.div`
-  margin: auto;
-  margin-top: 50px;
+  /* margin: auto; */
+  /* margin-top: 50px; */
   font-size: 20px;
 `;
 
@@ -195,6 +198,7 @@ const Wrapper = styled.div`
 const MainWrapper = styled.div`
   display: flex;
   flex-direction: column;
+  margin: auto;
 `;
 
 const MoodButton = styled.button`
