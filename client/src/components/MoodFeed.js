@@ -2,13 +2,16 @@ import styled from "styled-components";
 import moment from "moment";
 
 const MoodFeed = ({ feedMoods }) => {
+
+  const slicedMoodsArr = feedMoods.slice(-6);
+  console.log(slicedMoodsArr);
   return (
     <>
       <Header>YOUR MUSICMOODS</Header>
       <SizeDiv>
         <Wrapper>
           <Feed>
-            {feedMoods?.map((el) => (
+            {slicedMoodsArr?.map((el) => (
               <>
                 <p>
                   On {moment(el.timestamp).format("MMMM D, YYYY [at] h:mm A")},
