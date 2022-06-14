@@ -58,8 +58,6 @@ const moodAnalysis = (recentlyPlayed) => {
     mood = "chill";
   } else if (danceabilityAvg <= 0.7 && energyAvg <= 0.6 && valenceAvg <= 0.6) {
     mood = "relaxed";
-  } else if (danceabilityAvg >= 0.6 && energyAvg >= 0.7 && valenceAvg <= 0.5) {
-    mood = "a bit agitated";
   } else if (danceabilityAvg >= 0.7 && energyAvg >= 0.75 && valenceAvg <= 0.5) {
     mood = "a bit angsty";
   } else if (danceabilityAvg <= 0.7 && energyAvg >= 0.8 && valenceAvg <= 0.7) {
