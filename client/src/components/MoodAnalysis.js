@@ -98,6 +98,7 @@ const RowDiv = styled.div`
   padding-top: 20px;
   padding-bottom: 30px;
 `;
+
 const Bold = styled.span`
   font-weight: bold;
 `;

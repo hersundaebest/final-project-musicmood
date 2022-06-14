@@ -21,6 +21,7 @@ const Wrapper = styled.div`
   display: flex;
   justify-content: space-between;
 `;
+
 const HomeButton = styled.button`
   padding: 10px 20px;
   font-family: "Poppins";
@@ -37,14 +38,14 @@ const HomeLink = styled(NavLink)`
 `;
 
 const Header = styled.h1`
-font-family: 'Poppins';
-font-size: 30px;
-font-weight: 800;
-color: var(--primary-color);
-letter-spacing: 5px;
--webkit-text-fill-color: transparent;
+  font-family: "Poppins";
+  font-size: 30px;
+  font-weight: 800;
+  color: var(--primary-color);
+  letter-spacing: 5px;
+  -webkit-text-fill-color: transparent;
   -webkit-text-stroke-width: 2px;
   -webkit-text-stroke-color: var(--primary-color);
-`
+`;
 
 export default MoodHeader;

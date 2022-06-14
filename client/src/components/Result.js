@@ -6,7 +6,7 @@ import { useContext, useEffect } from "react";
 import { GlobalContext } from "./GlobalContext";
 
 const Result = () => {
-  const { userMood, userEmail, setFeedMoods, feedMoods } = useContext(GlobalContext);
+  const { userMood, userEmail, setFeedMoods } = useContext(GlobalContext);
 
   useEffect(() => {
 if (userMood) {
@@ -32,9 +32,6 @@ if (userMood) {
         console.log(err.message);
       });
   }}, [userMood]);
-
-
-// useeffect - empty d.a. !feedMoods useNavigate /home
 
   return (
     <>

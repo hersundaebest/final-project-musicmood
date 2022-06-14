@@ -2,10 +2,6 @@ import { createGlobalStyle } from "styled-components";
 
 export default createGlobalStyle`
 
-  /* http://meyerweb.com/eric/tools/css/reset/ 
-   v2.0 | 20110126
-   License: none (public domain)
-*/
 :root {
 	--primary-color: #F0EBF4;
 	--secondary-color: #303030;
@@ -44,12 +40,6 @@ body {
 	animation: gradient 15s ease infinite;
 }
 
-& .mood {
-	background: linear-gradient(-60deg, blue, lightblue, white, red, green);
-	background-size: 400% 400%;
-	animation: gradient 15s ease infinite;
-}
-
 @keyframes gradient {
 	0% {
 		background-position: 0% 50%;
@@ -60,22 +50,6 @@ body {
 	100% {
 		background-position: 0% 50%;
 	}
-}
-
-ol, ul {
-	list-style: none;
-}
-blockquote, q {
-	quotes: none;
-}
-blockquote:before, blockquote:after,
-q:before, q:after {
-	content: '';
-	content: none;
-}
-table {
-	border-collapse: collapse;
-	border-spacing: 0;
 }
 
 html, body, #root {

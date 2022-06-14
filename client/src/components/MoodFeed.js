@@ -61,6 +61,7 @@ const SizeDiv = styled.div`
   padding-bottom: 20px;
   padding-top: 10px;
 `;
+
 const Wrapper = styled.div`
   background-color: rgba(240, 235, 244, 0.7);
   margin-top: 5px;
@@ -86,4 +87,5 @@ const Divider = styled.hr`
   margin-top: 20px;
   margin-bottom: 20px;
 `;
+
 export default MoodFeed;

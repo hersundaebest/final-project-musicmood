@@ -27,7 +27,7 @@ const Mood = () => {
       .then((res) => res.json())
       .then((data) => {
         setRecentlyPlayed(data.audioFeatures);
-        setClicked(true); // persist this unless
+        setClicked(true);
         setUserMood(data.mood);
         setItems(data.items);
       })

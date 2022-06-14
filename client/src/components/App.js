@@ -15,10 +15,9 @@ const App = () => {
             <Route exact path="/" element={<Home />} />
             <Route exact path="/mood" element={<Mood />} />
             <Route exact path="/result" element={<Result />} />
-
           </Routes>
         </ComponentWrapper>
-      </BrowserRouter>    
+      </BrowserRouter>
     </AppWrapper>
   );
 };

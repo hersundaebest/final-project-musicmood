@@ -29,20 +29,11 @@ export const GlobalProvider = ({ children }) => {
     if (sessionToken) {
       setStatus("loading");
       spotifyAPI.setAccessToken(JSON.parse(sessionToken));
-      spotifyAPI
-        .getMe()
-        .then((data) => {
-          setUserData(data);
-          setStatus("loaded");
-          return data.body;
-        })
-        // .then((data) => {
-        //   fetch(`/api/get-mood?email=${data.email}`)
-        //     .then((res) => res.json())
-        //     .then((data) => {
-        //       setFeedMoods(data.data.moods);
-        //     });
-        // });
+      spotifyAPI.getMe().then((data) => {
+        setUserData(data);
+        setStatus("loaded");
+        return data.body;
+      });
     }
   }, [accessToken]);
 
@@ -89,8 +80,7 @@ export const GlobalProvider = ({ children }) => {
         setClicked,
         setUserMood,
         setItems,
-        setFeedMoods
-
+        setFeedMoods,
       }}
     >
       {children}
