@@ -13,14 +13,12 @@ const Mood = () => {
   const [userMood, setUserMood] = useState();
   const [clicked, setClicked] = useState(false);
   const [status, setStatus] = useState("idle");
-  const [albumArtURL, setAlbumArtURL] = useState();
-  const [trackURL, setTrackURL] = useState();
   const [feedMoods, setFeedMoods] = useState();
+  const [items, setItems] = useState();
 
-  
   const userEmail = userData?.body.email;
 
-// obtaining access token from spotify api
+  // obtaining access token from spotify api
   const spotifyAPI = new SpotifyWebApi({
     clientId: process.env.REACT_APP_CLIENT_ID,
   });
@@ -36,16 +34,20 @@ const Mood = () => {
     if (sessionToken) {
       setStatus("loading");
       spotifyAPI.setAccessToken(JSON.parse(sessionToken));
-      spotifyAPI.getMe().then((data) => {
-        setUserData(data);
-        setStatus("loaded");
-        return data.body;
-      })
-      .then(data => {
-        fetch(`/api/get-mood?email=${data.email}`)
-        .then((res) => res.json())
-        .then(data => {setFeedMoods(data.data.moods)})
-      })
+      spotifyAPI
+        .getMe()
+        .then((data) => {
+          setUserData(data);
+          setStatus("loaded");
+          return data.body;
+        })
+        .then((data) => {
+          fetch(`/api/get-mood?email=${data.email}`)
+            .then((res) => res.json())
+            .then((data) => {
+              setFeedMoods(data.data.moods);
+            });
+        });
     }
   }, [accessToken]);
 
@@ -66,6 +68,7 @@ const Mood = () => {
     }
   }, [userData]);
 
+  // setting state values through find your mood button
   const onClickHandler = async () => {
     await fetch(`/me/player/recently-played?token=${accessToken}`)
       .then((res) => res.json())
@@ -73,24 +76,14 @@ const Mood = () => {
         setRecentlyPlayed(data.audioFeatures);
         setClicked(true);
         setUserMood(data.mood);
-        setAlbumArtURL(data.album);
-        setTrackURL(data.songLink)
+        setItems(data.items);
       })
-      {userMood && 
-      fetch('/api/add-mood', {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ mood: userMood, email: userEmail }),
-      })
-        .then(console.log("Mood recorded"))
-    .catch((err) => console.log(err.message));
-  }
+      .then(console.log("Mood recorded"))
+      .catch((err) => console.log(err.message));
   };
 
-  const addMoodHandler = async () => {
-    await fetch('/api/add-mood', {
+  useEffect(() => {
+    fetch("/api/add-mood", {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
@@ -98,16 +91,32 @@ const Mood = () => {
       body: JSON.stringify({ mood: userMood, email: userEmail }),
     })
       .then(console.log("Mood recorded"))
+
       .catch((err) => {
         console.log(err.message);
       });
-  };
+  }, [userMood]);
 
+  // const addMoodHandler = async () => {
+  //   await fetch('/api/add-mood', {
+  //     method: "PATCH",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     },
+  //     body: JSON.stringify({ mood: userMood, email: userEmail }),
+  //   })
+  //     .then(console.log("Mood recorded"))
+  //     .catch((err) => {
+  //       console.log(err.message);
+  //     });
+  // };
 
   // variables to display data
   const userName = userData?.body.display_name;
   const profileImg = userData?.body.images[0].url;
   const profileURL = userData?.body.external_urls.spotify;
+
+ 
 
   if (status === "loading") {
     return (
@@ -121,37 +130,39 @@ const Mood = () => {
     <>
       {clicked === false ? (
         <>
-          <MoodHeader userData={userData}/>
+          <MoodHeader userData={userData} />
           <MainWrapper>
             <WelcomeMessage>
               Howdy, <b>{userName}</b>!
             </WelcomeMessage>
             <A href={profileURL} target="_blank">
-              <ProfileImg src={profileImg} />
+              <ProfileImg
+                src={profileImg}
+                
+              />
             </A>
             <MoodButton onClick={onClickHandler}>FIND YOUR MOOD</MoodButton>
           </MainWrapper>
         </>
       ) : (
         <>
-          <MoodHeader userData={userData}/>
+          <MoodHeader userData={userData} />
           <Wrapper>
-  <Div1>
+            <Div1>
               <MoodAnalysis
                 userData={userData}
                 recentlyPlayed={recentlyPlayed}
-                albumArtURL={albumArtURL}
-                trackURL={trackURL}
                 accessToken={accessToken}
                 userMood={userMood}
+                items={items}
               />
-              
             </Div1>
             <Div1>
-            <ButtonDiv>
+              {/* button to record mood - deal with this */}
+              {/* <ButtonDiv>
             <RecordButton type="submit" onClick={addMoodHandler}>RECORD YOUR MOOD</RecordButton>
-            </ButtonDiv>
-            <MoodFeed userData={userData} feedMoods={feedMoods}/>
+            </ButtonDiv> */}
+              <MoodFeed userData={userData} feedMoods={feedMoods} />
             </Div1>
           </Wrapper>
         </>
@@ -161,11 +172,11 @@ const Mood = () => {
 };
 
 const Div1 = styled.div`
-margin-left: auto;
-margin-right: auto;
-padding-left: 20px;
-padding-right: 20px;
-`
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 20px;
+  padding-right: 20px;
+`;
 
 const LoadingDiv = styled.div`
   margin: auto;
@@ -173,8 +184,6 @@ const LoadingDiv = styled.div`
 `;
 
 const WelcomeMessage = styled.div`
-  /* margin: auto; */
-  /* margin-top: 50px; */
   font-size: 20px;
 `;
 
@@ -191,7 +200,7 @@ const A = styled.a`
 
 const Wrapper = styled.div`
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   margin: auto;
 `;
 
@@ -232,10 +241,10 @@ const RecordButton = styled.button`
 `;
 
 const ButtonDiv = styled.div`
-margin-top: 55px;
-/* margin-bottom: 10px; */
-display: flex;
-align-items: center;
-justify-content: center;
+  margin-top: 55px;
+  /* margin-bottom: 10px; */
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 export default Mood;

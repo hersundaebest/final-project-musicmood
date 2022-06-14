@@ -3,7 +3,7 @@ import moment from "moment";
 
 const MoodFeed = ({ feedMoods }) => {
 
-  const slicedMoodsArr = feedMoods.slice(-6);
+  const slicedMoodsArr = feedMoods.slice(-3);
   console.log(slicedMoodsArr);
   return (
     <>
@@ -54,7 +54,7 @@ const SizeDiv = styled.div`
 const Wrapper = styled.div`
   background-color: rgba(240, 235, 244, 0.7);
   margin-top: 5px;
-  padding: 30px 20px;
+  padding: 30px 20px 20px 20px;
   border-radius: 20px;
   text-align: center;
   display: flex;

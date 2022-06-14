@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { useState, useEffect } from "react";
 
-const MoodAnalysis = ({ userData, albumArtURL, accessToken, userMood, trackURL }) => {
+const MoodAnalysis = ({ userData, accessToken, userMood, items }) => {
   const userName = userData?.body.display_name;
   const [danceScore, setDanceScore] = useState("");
   const [energyScore, setEnergyScore] = useState("");
@@ -19,20 +19,29 @@ const MoodAnalysis = ({ userData, albumArtURL, accessToken, userMood, trackURL }
       .catch((err) => console.log(err.message));
   }, []);
 
- const songURI = trackURL?.map((track) => track);
+  const onMouseEnterHandler = (e) => {
+    e.target.style.transform = "scale(1.1)";
+  };
+
+  const onMouseLeaveHandler = (e) => {
+    e.target.style.transform = "scale(1)";
+  };
 
   return (
     <>
       <Wrapper1>
         <AlbumArtGrid>
-          {albumArtURL?.map((url) => (
-            <a href={songURI} target="_blank">
-            <AlbumArtImg src={url}/>
+          {items?.map((el) => (
+            <a href={el.uri} target="_blank">
+              <AlbumArtImg
+                src={el.album.images[0].url}
+                onMouseOver={onMouseEnterHandler}
+                onMouseLeave={onMouseLeaveHandler}
+              />
             </a>
           ))}
         </AlbumArtGrid>
       </Wrapper1>
-
 
       <Wrapper2>
         <Div>
@@ -95,15 +104,14 @@ const AlbumArtGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   grid-template-rows: auto;
-  column-gap: 5px;
+  column-gap: 10px;
   row-gap: 5px;
   align-items: stretch;
   justify-items: center;
 `;
 
 const AlbumArtImg = styled.img`
-  width: 80px;
-  height: 8-px;
+  width: 100px;
 `;
 
 const Wrapper1 = styled.div`

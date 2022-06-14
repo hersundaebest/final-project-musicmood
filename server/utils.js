@@ -44,13 +44,13 @@ const valenceAvg = valenceArr?.reduce((a, b) => a + b, 0) / valenceArr?.length;
     else if (danceabilityAvg >= 0.7 && energyAvg >= 0.7 && valenceAvg >= 0.6) {
       mood = "quite joyful";
     }
-    else if (danceabilityAvg >= 0.7 && energyAvg >= 0.5 && valenceAvg >= 0.5) {
-      mood = "at peace";
+    else if (danceabilityAvg <= 0.7 && energyAvg >= 0.5 && valenceAvg <= 0.5) {
+      mood = "content";
     }
     else if (danceabilityAvg <= 0.7 && energyAvg >= 0.6 && valenceAvg >= 0.5) {
         mood = "chill";
       }
-   else if (danceabilityAvg <= 0.7 && energyAvg >= 0.5 && valenceAvg <= 0.5) {
+   else if (danceabilityAvg <= 0.7 && energyAvg <= 0.6 && valenceAvg <= 0.5) {
       mood = "relaxed";
     }
     else if (danceabilityAvg >= 0.7 && energyAvg >= 0.7 && valenceAvg <= 0.5) {
