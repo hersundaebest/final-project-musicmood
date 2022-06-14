@@ -38,25 +38,25 @@ const valenceAvg = valenceArr?.reduce((a, b) => a + b, 0) / valenceArr?.length;
 
 // mood analysis
     let mood = "fine and dandy";
-    if (danceabilityAvg <= 0.8 && energyAvg >= 0.8 && valenceAvg <= 0.8) {
+    if (danceabilityAvg >= 0.7 && energyAvg >= 0.8 && valenceAvg >= 0.7) {
       mood = "energetic";
     }
     else if (danceabilityAvg >= 0.7 && energyAvg >= 0.7 && valenceAvg >= 0.6) {
       mood = "quite joyful";
     }
-    else if (danceabilityAvg <= 0.7 && energyAvg >= 0.5 && valenceAvg <= 0.5) {
+    else if (danceabilityAvg >= 0.6 && energyAvg >= 0.5 && valenceAvg >= 0.5) {
       mood = "content";
     }
-    else if (danceabilityAvg <= 0.7 && energyAvg >= 0.6 && valenceAvg >= 0.5) {
+    else if (danceabilityAvg <= 0.7 && energyAvg <= 0.7 && valenceAvg >= 0.5) {
         mood = "chill";
       }
-   else if (danceabilityAvg <= 0.7 && energyAvg <= 0.6 && valenceAvg <= 0.5) {
+   else if (danceabilityAvg <= 0.7 && energyAvg <= 0.6 && valenceAvg <= 0.6) {
       mood = "relaxed";
     }
-    else if (danceabilityAvg >= 0.7 && energyAvg >= 0.7 && valenceAvg <= 0.5) {
+    else if (danceabilityAvg >= 0.6 && energyAvg >= 0.7 && valenceAvg <= 0.5) {
       mood = "a bit agitated";
     }
-    else if (danceabilityAvg <= 0.7 && energyAvg >= 0.7 && valenceAvg <= 0.5) {
+    else if (danceabilityAvg >= 0.7 && energyAvg >= 0.75 && valenceAvg <= 0.5) {
       mood = "a bit angsty";
     }
     else if (danceabilityAvg <= 0.7 && energyAvg >= 0.8 && valenceAvg <= 0.7) {

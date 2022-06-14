@@ -27,9 +27,34 @@ font-size: 100px;
 font-weight: 800;
 color: var(--primary-color);
 letter-spacing: 10px;
+animation-name: wavy;
+  animation-duration: 1.4s;
+  animation-timing-function: ease;
+  animation-iteration-count: infinite;
+  position: relative;
+  top: 0;
+  left: 0;
 -webkit-text-fill-color: transparent;
   -webkit-text-stroke-width: 3px;
   -webkit-text-stroke-color: var(--primary-color);
+  
+@keyframes wavy {
+  0% {
+    top: 0px;
+  }
+  50% {
+    top: -4px;
+  }
+  75% {
+    top: -4px;
+  }
+  100% {
+    top: 0px;
+  }
+}
+
+
+  
 `
 
 const Subheader = styled.h2`

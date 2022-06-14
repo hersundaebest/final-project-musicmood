@@ -116,7 +116,13 @@ const Mood = () => {
   const profileImg = userData?.body.images[0].url;
   const profileURL = userData?.body.external_urls.spotify;
 
- 
+  const onMouseEnterHandler = (e) => {
+    e.target.style.transform = "scale(1.05)";
+  };
+
+  const onMouseLeaveHandler = (e) => {
+    e.target.style.transform = "scale(1)";
+  };
 
   if (status === "loading") {
     return (
@@ -135,11 +141,13 @@ const Mood = () => {
             <WelcomeMessage>
               Howdy, <b>{userName}</b>!
             </WelcomeMessage>
-            <A href={profileURL} target="_blank">
-              <ProfileImg
-                src={profileImg}
-                
-              />
+            <A
+              href={profileURL}
+              target="_blank"
+              onMouseOver={onMouseEnterHandler}
+              onMouseLeave={onMouseLeaveHandler}
+            >
+              <ProfileImg src={profileImg} />
             </A>
             <MoodButton onClick={onClickHandler}>FIND YOUR MOOD</MoodButton>
           </MainWrapper>
