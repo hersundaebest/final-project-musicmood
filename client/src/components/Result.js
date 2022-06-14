@@ -20,11 +20,9 @@ if (userMood) {
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log("data", data);
         fetch(`/api/get-mood?email=${userEmail}`)
           .then((res) => res.json())
           .then((data) => {
-              console.log("patch data", data.data.moods)
             setFeedMoods(data.data.moods);
           });
       })

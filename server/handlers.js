@@ -58,7 +58,6 @@ const getRecentlyPlayedSongs = async (req, res) => {
           const danceability = danceabilityScore(data.body);
           const energy = energyScore(data.body);
           const valence = valenceScore(data.body);
-          console.log("mood", mood);
           res.status(200).json({
             audioFeatures: data.body,
             mood: mood,
