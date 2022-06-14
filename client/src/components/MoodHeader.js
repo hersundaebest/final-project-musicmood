@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { NavLink } from "react-router-dom";
 
-const MoodHeader = ({userData}) => {
+const MoodHeader = () => {
   return (
     <>
       <Wrapper>

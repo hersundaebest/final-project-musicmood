@@ -1,7 +1,10 @@
 import styled from "styled-components";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
+import { GlobalContext } from "./GlobalContext";
 
-const MoodAnalysis = ({ userData, accessToken, userMood, items }) => {
+const MoodAnalysis = () => {
+  const { userData, userMood, accessToken, items } = useContext(GlobalContext);
+
   const userName = userData?.body.display_name;
   const [danceScore, setDanceScore] = useState("");
   const [energyScore, setEnergyScore] = useState("");

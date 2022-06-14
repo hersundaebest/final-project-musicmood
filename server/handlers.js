@@ -43,9 +43,6 @@ const getRecentlyPlayedSongs = async (req, res) => {
     })
     .then(
       (info) => {
-        // get album art images from recently played songs data
-console.log(info.body.items);
-        // create a big array from info.body.items and get the individual items - return song.track
         const itemsArray = info.body.items.map((song) => song.track);
         const songsArray = info.body.items.map((song) => song.track.id);
         const songLinkArray = info.body.items.map((song) => song.track.uri);
@@ -70,7 +67,7 @@ console.log(info.body.items);
             valence: valence,
             album: albumArtImage,
             songLink: songLink,
-            items: itemsArray
+            items: itemsArray,
           });
         });
       },

@@ -3,6 +3,7 @@ import GlobalStyles from "./GlobalStyles";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./Home";
 import Mood from "./Mood";
+import Result from "./Result";
 
 const App = () => {
   return (
@@ -13,6 +14,8 @@ const App = () => {
           <Routes>
             <Route exact path="/" element={<Home />} />
             <Route exact path="/mood" element={<Mood />} />
+            <Route exact path="/result" element={<Result />} />
+
           </Routes>
         </ComponentWrapper>
       </BrowserRouter>    

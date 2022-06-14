@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import Mood from "./Mood";
 import Footer from "./Footer"
 import { loginURL } from "../spotify";
 

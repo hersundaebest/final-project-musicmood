@@ -1,10 +1,20 @@
 import styled from "styled-components";
 import moment from "moment";
+import { useContext, useEffect } from "react";
+import { GlobalContext } from "./GlobalContext";
+import { useNavigate } from "react-router-dom";
 
-const MoodFeed = ({ feedMoods }) => {
+const MoodFeed = () => {
+  const { feedMoods, accessToken } = useContext(GlobalContext);
+  let navigate = useNavigate();
+  const slicedMoodsArr = feedMoods?.slice(-3);
 
-  const slicedMoodsArr = feedMoods.slice(-3);
-  console.log(slicedMoodsArr);
+  useEffect(() => {
+    if (!accessToken) {
+      navigate("/");
+    }
+  }, []);
+
   return (
     <>
       <Header>MUSICMOODS</Header>
