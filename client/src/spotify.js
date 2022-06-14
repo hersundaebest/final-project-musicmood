@@ -1,5 +1,3 @@
-// here, we are declaring our endpoints
-
 const authEndpoint = 'https://accounts.spotify.com/authorize';
 
 const redirectURL = 'http://localhost:3000/mood/';
