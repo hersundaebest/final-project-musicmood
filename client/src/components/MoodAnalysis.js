@@ -32,7 +32,7 @@ const MoodAnalysis = ({ userData, accessToken, userMood, items }) => {
       <Wrapper1>
         <AlbumArtGrid>
           {items?.map((el) => (
-            <a href={el.uri} target="_blank">
+            <a href={`https://open.spotify.com/track/${el.id}`} target="_blank">
               <AlbumArtImg
                 src={el.album.images[0].url}
                 onMouseOver={onMouseEnterHandler}
